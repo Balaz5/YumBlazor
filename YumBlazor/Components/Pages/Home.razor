@@ -5,7 +5,7 @@
 @inject NavigationManager _NavigationManager
 @inject IProductRepository _productRepository
 @inject ICategoryRepository _categoryRepository
-@inject IShoppingCartRepository _shoppingCartRepository
+@inject IShoppingCartRepository _cartRepository
 
 <PageTitle>Home</PageTitle>
 @if (IsProcessing)
@@ -77,7 +77,7 @@ else
                                 <p class="card-text mt-2">@((MarkupString)@prod.Description)</p>
                                 <h4 class="text-center">
                                     <div class="m-lg-auto p-2" @onclick="() => AddOrderItem(prod)">
-                                        <i class="bi bi-cart3 btn btn-success text-right  px-5 form-control" > Add to cart</i>
+                                    <i class="bi bi-cart3 btn btn-success text-right  px-5 form-control" > Add to cart</i>
                                     </div>
                                 </h4>
                                 
@@ -160,12 +160,12 @@ else
         // if user is not authenticated, redirect to login page
         if (!authenticated)
         {
-            _NavigationManager.NavigateTo("account/login");
+            _NavigationManager.NavigateTo("account/login", true);
         }
         else
         {
             // add item to cart
-            var result = await _shoppingCartRepository
+            var result = await _cartRepository
                 .UpdateCartAsync(user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value, product.Id, 1);
 
             if (result)
@@ -177,6 +177,5 @@ else
                 _JS?.ToastrError("Error encountered.");
             }
         }
-
     }
 }
