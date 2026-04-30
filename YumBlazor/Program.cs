@@ -40,6 +40,11 @@ builder.Services.AddAuthentication(options =>
         options.ClientId = "ClientId";
         options.ClientSecret = "ClientSecret";
     })
+    .AddGoogle(options =>
+    {
+        options.ClientId = "ClientId";
+        options.ClientSecret = "ClientSecret";
+    })
     .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
